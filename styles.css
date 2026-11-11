@@ -1,0 +1,29 @@
+:root {
+  --burgundy-deep: #320A10;
+  --burgundy-main: #401018;
+  --gold: #D4AF37;
+  --cream: #F9F6EE;
+}
+body {
+  background: radial-gradient(circle at top center, #4C141E 0%, #320A10 100%);
+  color: var(--cream);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  min-height: 100vh;
+}
+.font-serif-luxury { font-family: 'Playfair Display', serif; }
+.gold-gradient { background: linear-gradient(135deg, #F3E5AB 0%, #D4AF37 50%, #AA7C11 100%); color: #250508; }
+.gold-border { border: 1px solid rgba(212, 175, 55, 0.35); }
+.gold-border-glow:focus { border-color: #D4AF37; box-shadow: 0 0 15px rgba(212, 175, 55, 0.25); }
+.glass-card {
+  background: rgba(64, 16, 24, 0.65);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+.glass-card-item {
+  background: rgba(91, 29, 40, 0.45);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  transition: all 0.25s ease;
+}
+.glass-card-item:hover { border-color: #D4AF37; transform: translateY(-2px); }
