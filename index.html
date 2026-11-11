@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>La Querendona — ERP & POS 360°</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="flex flex-col antialiased selection:bg-[#D4AF37] selection:text-[#320A10]">
+
+  <!-- PANTALLA DE LOGIN RBAC -->
+  <div id="loginScreen" class="fixed inset-0 z-50 flex items-center justify-center bg-[#250508]/95 backdrop-blur-xl p-4">
+    <div class="glass-card rounded-3xl p-8 sm:p-10 max-w-md w-full text-center shadow-2xl relative overflow-hidden">
+      <h1 class="font-serif-luxury text-3xl sm:text-4xl text-[#D4AF37] tracking-wide mb-1">LA QUERENDONA</h1>
+      <p class="text-[11px] uppercase tracking-[0.25em] text-[#F9F6EE]/70 mb-8 font-medium">Alta Cocina Tradicional • ERP & POS 360°</p>
+
+      <div class="space-y-4 text-left">
+        <label class="block text-xs uppercase tracking-wider text-[#D4AF37] font-semibold text-center">Ingrese PIN de Acceso por Rol</label>
+        <input id="pinInput" type="password" maxlength="4" placeholder="••••" class="w-full text-center text-3xl tracking-[0.6em] py-3.5 rounded-2xl bg-[#320A10] text-[#D4AF37] gold-border gold-border-glow focus:outline-none" />
+        
+        <button onclick="iniciarSesion()" class="w-full py-4 rounded-2xl font-bold uppercase tracking-wider gold-gradient shadow-xl transition transform active:scale-95 text-sm">
+          Desbloquear Terminal
+        </button>
+      </div>
+
+      <div class="mt-8 text-left text-[11px] text-[#F9F6EE]/70 space-y-1.5 border-t border-[#D4AF37]/20 pt-5">
+        <p class="font-semibold text-[#D4AF37] mb-1">Perfiles Autorizados:</p>
+        <p class="flex justify-between"><span>👑 CEO / SuperAdmin</span> <b class="text-[#D4AF37]">9999</b></p>
+        <p class="flex justify-between"><span>🛒 Carro Boutique (Pinares)</span> <b class="text-[#D4AF37]">1010</b></p>
+        <p class="flex justify-between"><span>🛵 Eco-Tuk (Ruta Móvil)</span> <b class="text-[#D4AF37]">2020</b></p>
+        <p class="flex justify-between"><span>🍳 Cocina Central (Planta)</span> <b class="text-[#D4AF37]">3030</b></p>
+      </div>
+      <p id="loginError" class="text-red-400 text-xs mt-4 hidden font-medium bg-red-950/50 py-2 rounded-lg border border-red-500/30">PIN incorrecto.</p>
+    </div>
+  </div>
+
+  <!-- CABECERA -->
+  <header class="glass-card border-b border-[#D4AF37]/20 px-6 py-4 sticky top-0 z-40 backdrop-blur-xl">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
+      <div class="flex items-center gap-3.5">
+        <div class="w-11 h-11 rounded-2xl gold-gradient flex items-center justify-center font-serif-luxury font-bold text-xl shadow-md">LQ</div>
+        <div>
+          <h2 class="font-serif-luxury text-xl text-[#D4AF37] tracking-wide leading-none">LA QUERENDONA FOODS</h2>
+          <span id="roleBadge" class="text-xs text-[#F9F6EE]/80 font-medium flex items-center gap-1.5 mt-1">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Conectado a Google Sheets
+          </span>
+        </div>
+      </div>
+      <button onclick="cerrarSesion()" class="px-4 py-2 rounded-xl text-xs font-semibold bg-red-950/60 text-red-200 border border-red-500/30">Cerrar Sesión</button>
+    </div>
+  </header>
+
+  <!-- NAVEGACIÓN -->
+  <nav class="max-w-7xl w-full mx-auto px-6 py-4">
+    <div class="glass-card p-1.5 rounded-2xl flex gap-2 overflow-x-auto text-xs font-semibold scrollbar-none">
+      <button id="tabBtn-pos" onclick="mostrarTab('pos')" class="tab-btn px-5 py-3 rounded-xl gold-gradient transition whitespace-nowrap">🛒 Punto de Venta (POS)</button>
+      <button id="tabBtn-lotes" onclick="mostrarTab('lotes')" class="tab-btn px-5 py-3 rounded-xl text-[#F9F6EE]/80 whitespace-nowrap">❄️ Lotes al Vacío</button>
+      <button id="tabBtn-invima" onclick="mostrarTab('invima')" class="tab-btn px-5 py-3 rounded-xl text-[#F9F6EE]/80 whitespace-nowrap">🌡️ INVIMA 2674</button>
+      <button id="tabBtn-finanzas" onclick="mostrarTab('finanzas')" class="tab-btn px-5 py-3 rounded-xl text-[#F9F6EE]/80 whitespace-nowrap">📊 Balance Vivo</button>
+      <button id="tabBtn-roas" onclick="mostrarTab('roas')" class="tab-btn px-5 py-3 rounded-xl text-[#F9F6EE]/80 whitespace-nowrap">🚀 Simulador Ads</button>
+    </div>
+  </nav>
+
+  <!-- CONTENIDO -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-6 pb-12 space-y-6">
+    <section id="tab-pos" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div class="lg:col-span-2 space-y-5">
+        <div class="glass-card p-5 rounded-3xl grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div>
+            <label class="text-xs uppercase tracking-wider text-[#D4AF37] font-semibold block mb-1.5">Unidad / Canal</label>
+            <select id="posCanal" class="w-full bg-[#320A10] text-sm px-3.5 py-2.5 rounded-xl gold-border text-[#F9F6EE]">
+              <option value="Carro_Boutique_1">Carro Boutique (Pinares)</option>
+              <option value="EcoTuk_1">Eco-Tuk (Ruta Móvil)</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-xs uppercase tracking-wider text-[#D4AF37] font-semibold block mb-1.5">Sector Ruta</label>
+            <select id="posUbicacion" class="w-full bg-[#320A10] text-sm px-3.5 py-2.5 rounded-xl gold-border text-[#F9F6EE]">
+              <option value="Pinares">Pinares</option>
+              <option value="Cerritos">Cerritos</option>
+              <option value="Dosquebradas">Dosquebradas</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-xs uppercase tracking-wider text-[#D4AF37] font-semibold block mb-1.5">Atribución Anuncio</label>
+            <select id="posSemilla" class="w-full bg-[#320A10] text-sm px-3.5 py-2.5 rounded-xl gold-border text-[#F9F6EE]">
+              <option value="ORGANICO">Orgánico / Calle</option>
+              <option value="REF-OLLAS">[REF-OLLAS] Cero Ollas</option>
+            </select>
+          </div>
+        </div>
+        <div id="productGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-4"></div>
+      </div>
+
+      <div class="glass-card p-6 rounded-3xl flex flex-col justify-between space-y-5">
+        <div>
+          <h3 class="font-serif-luxury text-2xl text-[#D4AF37] border-b border-[#D4AF37]/20 pb-3 mb-4">Orden Actual</h3>
+          <div id="cartItems" class="space-y-2.5 max-h-60 overflow-y-auto">
+            <p class="text-xs text-[#F9F6EE]/50 italic text-center py-6">Seleccione productos...</p>
+          </div>
+        </div>
+        <div class="space-y-4 border-t border-[#D4AF37]/20 pt-4">
+          <div class="flex justify-between items-center bg-[#320A10]/80 p-3.5 rounded-2xl gold-border">
+            <span class="text-xs uppercase tracking-wider text-[#D4AF37] font-bold">TOTAL:</span>
+            <span id="cartTotal" class="text-xl font-serif-luxury font-bold text-[#D4AF37]">$0 COP</span>
+          </div>
+          <button onclick="registrarVentaEnSheets()" class="w-full py-4 rounded-2xl font-bold uppercase tracking-wider gold-gradient shadow-xl text-xs">
+            ✅ Registrar Venta en Google Sheets
+          </button>
+          <p id="posStatus" class="text-center text-xs text-emerald-300 font-medium hidden bg-emerald-950/60 py-2 rounded-xl"></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
